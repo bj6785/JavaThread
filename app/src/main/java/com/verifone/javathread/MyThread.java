@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 public class MyThread extends Thread {
 
-    Handler mHandler;
+    MyHandler mHandler;
     Activity mActivity;
 
     public MyThread(Activity activity) {
@@ -20,9 +21,15 @@ public class MyThread extends Thread {
 
     @Override
     public void run() {
-        Log.d("TAG", "new thread:" + Thread.currentThread().getId());
         Looper.prepare();
+        Log.d("TAG", "new thread:" + Thread.currentThread().getId());
         mHandler = new MyHandler(mActivity);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mActivity, "测试", Toast.LENGTH_SHORT).show();
+            }
+        });
         Looper.loop();
     }
 
